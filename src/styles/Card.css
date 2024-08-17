@@ -1,0 +1,64 @@
+/* Card Styles */
+.card {
+  width: auto;
+  height: auto;
+  min-width: 200px;
+  min-height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.card.selected {
+  border: 3px solid #007bff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Text */
+.card-text {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+}
+
+/* Card Content */
+.card-title {
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+}
+
+.card-content {
+  font-size: 1em;
+  margin-top: 10px;
+  padding: 0;
+}
+
+/* Preview Container */
+.preview-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.card-preview {
+  display: inline-block;
+  position: relative;
+  width: 300px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
