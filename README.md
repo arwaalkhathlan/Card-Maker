@@ -1,6 +1,4 @@
-Certainly! Below is a sample README for your project, tailored to include the relevant details based on the React app you’ve been working on:
 
----
 
 # Card Customization App
 
