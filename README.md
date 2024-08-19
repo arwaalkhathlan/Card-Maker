@@ -5,7 +5,7 @@
 A React application that allows users to select a card template, customize it with text, preview the card, and download it.
 
 # Check it out!!
-you can see the website here: 
+you can see the website here: https://cardmaker-eid.netlify.app/
 
 ## Features
 
