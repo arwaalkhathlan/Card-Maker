@@ -79,7 +79,7 @@ const App = () => {
   };
 
   return (
-    <div className="App  mt-5">
+    <div className="App mt-5">
       <div className="container">
       <div className="text-center mb-4">
         <h1>عيد أضحى مبارك!</h1>
@@ -131,36 +131,40 @@ const App = () => {
 
 
       {previewCard && (
-
-    <div className="col-md-3  d-flex justify-content-between">
+  <div className="container d-flex justify-content-center align-items-center">
+    <div className="col-md-3 position-relative">
       <div
         style={{
           backgroundImage: `url(${previewCard.backgroundImage})`,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           width: '100%',
-          maxWidth: '350px', 
+          minWidth: '350px',
           height: '300px',
           border: 'transparent',
+          position: 'relative',
         }}
       >
-        <p className="position-absolute fw-bold text-center"
-        style={{
-          fontSize: '24px',
-          color: 'white',
-          transform: 'translate(-50%, 850%)',
-          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', 
-          zIndex: 1, 
-          width: '100%', 
-        }}
+        <p
+          className="position-absolute fw-bold text-center"
+          style={{
+            fontSize: '24px',
+            color: 'white',
+            transform: 'translate(-40%, 850%)', 
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', 
+            zIndex: 1,
+            width: '350px',
+          }}
         >
-
           {previewCard.text}
         </p>
       </div>
     </div>
+  </div>
+)}
 
-)}  </div>
+
+</div>
 
 
 
