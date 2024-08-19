@@ -4,7 +4,6 @@ import PreviewButton from './components/PreviewButton';
 import DownloadButton from './components/DownloadButton';
 import './styles/App.css';
 
-
 import cardTemplate1 from './images/card-template1.png';
 import cardTemplate2 from './images/card-template2.png';
 import cardTemplate3 from './images/card-template3.png';
@@ -62,13 +61,11 @@ const App = () => {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      // Determine font size based on card width
-      const fontSize = Math.min(canvas.width, canvas.height) / 10; // Adjust the divisor as needed
+      const fontSize = Math.min(canvas.width, canvas.height) / 10; 
       ctx.font = `${fontSize}px Arial`;
       ctx.fillStyle = 'white';
       ctx.textAlign = 'center';
 
-      // Calculate text position
       const textX = canvas.width / 2;
       const textY = canvas.height - (fontSize / 2);
 
@@ -82,77 +79,91 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-
-    
-      <h1>عيد أضحى مبارك!</h1>
-      <p>كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.</p>
-      <p>اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم</p>
-      
-    
-
-
-      <div className='container'>
-      
-      <CardList
-        cards={cards}
-        onCardClick={handleCardClick}
-        selectedCardId={selectedCardId}
-      />
-
+    <div className="App  mt-5">
+      <div className="container">
+      <div className="text-center mb-4">
+        <h1>عيد أضحى مبارك!</h1>
+        <p>كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.</p>
+        <p>اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم</p>
       </div>
 
-      <div className='container'>
-
-      <input
-        type="text"
-        value={inputText}
-        onChange={handleTextChange}
-        placeholder="Enter text for the selected card"
-        className="text-input"
-        disabled={selectedCardId === null}
-      />
-      
-
+      <div className="row">
+        <div className="col-12">
+          <CardList
+            cards={cards}
+            onCardClick={handleCardClick}
+            selectedCardId={selectedCardId}
+          />
+        </div>
       </div>
 
-      <div className='container'>
-      <PreviewButton
-        handlePreview={handlePreview}
-        disabled={selectedCardId === null}
-      />
-      <DownloadButton
-        handleDownload={handleDownload}
-        disabled={selectedCardId === null}
-      />
-      
+      <div className="row container justify-content-center ">
+        <div className="col-md-6">
+          <input
+            type="text"
+            value={inputText}
+            onChange={handleTextChange}
+            placeholder="أختكم أروى"
+            className="form-control text-input "
+            disabled={selectedCardId === null}
+          />
+        </div>
       </div>
       
+      </div>
+
+
+
+      <div className="row container justify-content-center ">
+        <div className="col-md-6 ">
+          <DownloadButton
+            handleDownload={handleDownload}
+            disabled={selectedCardId === null}
+          />
+          <PreviewButton
+            handlePreview={handlePreview}
+            disabled={selectedCardId === null}
+          />
+        </div>
+      </div>  
       
-      
+
+
 
       {previewCard && (
-        <div className="preview-container">
-          <div
-            className="card-preview"
-            style={{
-              backgroundImage: `url(${previewCard.backgroundImage})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              marginTop: '10px',
-              width: '350px',
-              minHeight: '300px',
-              border: '1px solid #ccc',
-              position: 'relative',
-            }}
-          >
-            <p className="card-text">{previewCard.text}</p>
-          </div>
-        </div>
-      )}
-    
-    
+
+    <div className="col-md-3  d-flex justify-content-between">
+      <div
+        style={{
+          backgroundImage: `url(${previewCard.backgroundImage})`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '100%',
+          maxWidth: '350px', 
+          height: '300px',
+          border: 'transparent',
+        }}
+      >
+        <p className="position-absolute fw-bold text-center"
+        style={{
+          fontSize: '24px',
+          color: 'white',
+          transform: 'translate(-50%, 850%)',
+          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', 
+          zIndex: 1, 
+          width: '100%', 
+        }}
+        >
+
+          {previewCard.text}
+        </p>
+      </div>
     </div>
+
+)}  </div>
+
+
+
   );
 };
 
