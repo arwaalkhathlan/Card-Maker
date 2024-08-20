@@ -11,7 +11,7 @@ const Card = ({ card, onCardClick, selectedCardId }) => {
       style={{ backgroundImage: `url(${card.backgroundImage})` }}
       onClick={() => onCardClick(card.id)}
     >
-      <p className="card-text">{card.text}</p>
+
     </div>
   );
 };

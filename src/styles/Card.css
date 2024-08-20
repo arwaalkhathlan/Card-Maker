@@ -3,7 +3,7 @@
   width: auto;
   height: auto;
   min-width: 250px;
-  min-height: 200px;
+  min-height: 210px;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -19,7 +19,7 @@
 }
 
 .card.selected {
-  border: 3px solid #007bff;
+  border: 3px solid #24d0db;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
