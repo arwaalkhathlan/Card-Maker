@@ -4,6 +4,7 @@ import PreviewButton from "./components/PreviewButton";
 import DownloadButton from "./components/DownloadButton";
 import "./styles/App.css";
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 
 import cardTemplate1 from "./images/card-template1.png";
 import cardTemplate2 from "./images/card-template2.png";
@@ -83,6 +84,7 @@ const App = () => {
 
   return (
     <div className="App mt-5">
+      <Header/>
       <div className="container">
         <div className="  mb-4">
           <h1 className="Text-Title">عيد أضحى مبارك!</h1>
@@ -90,6 +92,7 @@ const App = () => {
             كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.
           </h2>
           <h3 >اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم</h3>
+        </div>
         </div>
 
         <div className="row">
@@ -114,7 +117,7 @@ const App = () => {
             />
           </div>
         </div>
-      </div>
+      
 
       <div className=" row container justify-content-center ">
         <div className="col-md-6 ">

@@ -2,11 +2,11 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 100%;
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   background-color: #060bb1;
 }
@@ -26,11 +26,13 @@ body {
 .container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap; 
   gap: 20px;
-  padding:20px;
-  width: 80vh;
+  padding:1rem;
+  width: 100%;
+  max-width: 100rem;
+  margin: 10px;
 }
 
 /*button styles */
@@ -83,14 +85,140 @@ body {
 
 h2 {
   color: white;
-  font-size: 1.5em;
-  margin: 20px;
+  font-size: 1.5rem;
+  margin: 1.5rem;
   text-align: center;
 }
 
 h3 {
   color: white;
-  font-size: 1.2em;
-  margin: 20px;
+  font-size: 1.2rem;
+  margin: 1.5rem;
   text-align: center;
+}
+
+/* Card Styles */
+.card {
+  width: auto;
+  height: auto;
+  min-width: 250px;
+  min-height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.card.selected {
+  border: 3px solid #007bff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Card Content */
+.card-title {
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+}
+
+.card-content {
+  font-size: 1em;
+  margin-top: 10px;
+  padding: 0;
+}
+
+
+
+.card-text {
+  color: white;
+  font-size: 1.2em;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+
+/* Footer */
+
+.footer {
+  background-color: transparent;
+  color: white;
+  padding: 10px 0;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.footer:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.social-icon {
+  color: black;
+  font-size: 18px;
+  text-decoration: none;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.footer-text {
+  text-align: right;
+  font-size: 14px;
+}
+
+.footer-text p {
+  margin: 0;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 10px;
+  padding: 0px 8rem 0px 8rem;
+}
+
+/* Header Styles */
+
+.header {
+  background-color: #060bb1;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
 }

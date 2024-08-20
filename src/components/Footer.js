@@ -5,14 +5,14 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import "../styles/Footer.css";
+import "../styles/App.css";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-line"> </div>
 
-      <div className="footer-content">
+      <div className="footer-content footer-container">
         <div className="footer-text">
           <p>الخيار الأمثل في رحلة تحولك الرقمي.</p>
         </div>

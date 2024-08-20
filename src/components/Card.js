@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Card.css';
+import "../styles/App.css";
 
 const Card = ({ card, onCardClick, selectedCardId }) => {
   const isSelected = selectedCardId === card.id;
