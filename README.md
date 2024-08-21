@@ -17,7 +17,6 @@ you can see the website here: https://cardmaker-eid.netlify.app/
 ## Technologies Used
 
 - **React**: For building the user interface.
-- **Canvas API**: For rendering and downloading the customized card.
 - **HTML5**: For structure and styling.
 - **CSS**: For styling the components.
 

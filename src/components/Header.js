@@ -1,6 +1,9 @@
-import React from "react";
-import "../styles/App.css";
+
 import Googlelogin from "./Googlelogin";
+
+import React from 'react';
+import '../styles/App.css';
+
 const Header = () => {
   return (
     <header className="header">
