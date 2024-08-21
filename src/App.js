@@ -5,6 +5,7 @@ import DownloadButton from "./components/DownloadButton";
 import "./styles/App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import UploadCardButton from "./components/UploadCardButton";
 
 import cardTemplate1 from "./images/card-template1.png";
 import cardTemplate2 from "./images/card-template2.png";
@@ -37,7 +38,8 @@ const App = () => {
 
   const handleCardClick = (id) => {
     setSelectedCardId(id);
-    setInputText(cards.find((card) => card.id === id).text);
+    const selectedCard = cards.find((card) => card.id === id);
+    setInputText(selectedCard.text);
   };
 
   const handlePreview = () => {
@@ -71,7 +73,7 @@ const App = () => {
       ctx.textAlign = "center";
 
       const textX = canvas.width / 2;
-      const textY = canvas.height - fontSize / 2;
+      const textY = canvas.height / 2;
 
       ctx.fillText(card.text, textX, textY);
 
@@ -82,45 +84,52 @@ const App = () => {
     };
   };
 
+  const handleUpload = (uploadedImage) => {
+    const newCard = {
+      id: cards.length + 1,
+      backgroundImage: uploadedImage,
+      text: "",
+    };
+    setCards([...cards, newCard]);
+  };
+
   return (
     <div className="App mt-5">
-      <Header/>
+      <Header />
       <div className="container">
-        <div className="  mb-4">
+        <div className="mb-4">
           <h1 className="Text-Title">عيد أضحى مبارك!</h1>
-          <h2 >
+          <h2>
             كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.
           </h2>
-          <h3 >اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم</h3>
+          <h3>اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم</h3>
         </div>
+      </div>
+      <div className="row">
+        <div className="col-12">
+          <CardList
+            cards={cards}
+            onCardClick={handleCardClick}
+            selectedCardId={selectedCardId}
+          />
         </div>
-
-        <div className="row">
-          <div className="col-12">
-            <CardList
-              cards={cards}
-              onCardClick={handleCardClick}
-              selectedCardId={selectedCardId}
-            />
-          </div>
+      </div>
+      {/* the main text box */}
+      <div className="row container justify-content-center">
+        <div className="col-md-6">
+          <input
+            type="text"
+            value={inputText}
+            onChange={handleTextChange}
+            placeholder="أختكم أروى"
+            className="form-control text-input"
+            disabled={selectedCardId === null}
+          />
         </div>
-
-        <div className="row container justify-content-center ">
-          <div className="col-md-6">
-            <input
-              type="text"
-              value={inputText}
-              onChange={handleTextChange}
-              placeholder="أختكم أروى"
-              className="form-control text-input "
-              disabled={selectedCardId === null}
-            />
-          </div>
-        </div>
-      
-
-      <div className=" row container justify-content-center ">
-        <div className="col-md-6 ">
+      </div>
+      {/* Buttons */}
+      <div className="row container justify-content-center">
+        <div className="col-md-6">
           <DownloadButton
             handleDownload={handleDownload}
             disabled={selectedCardId === null}
@@ -132,7 +141,12 @@ const App = () => {
           />
         </div>
       </div>
-
+      <div className="row container justify-content-center">
+        <div className="col-md-6">
+          <UploadCardButton onUpload={handleUpload} />
+        </div>
+      </div>
+      {/* preview */}
       {previewCard && (
         <div className="container d-flex justify-content-center align-items-center">
           <div className="col-md-3 position-relative">
@@ -153,10 +167,12 @@ const App = () => {
                 style={{
                   fontSize: "24px",
                   color: "white",
-                  transform: "translate(-42%, 850%)",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-43%, 300%)",
                   textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                   zIndex: 1,
-                  width: "350px",
+                  width: "100%", 
                 }}
               >
                 {previewCard.text}
@@ -165,10 +181,7 @@ const App = () => {
           </div>
         </div>
       )}
-
-      
-
-      <Footer/>
+      <Footer />
     </div>
   );
 };
