@@ -23,7 +23,7 @@ const Header = () => {
             <button
               onClick={() => {
                 doSignOut().then(() => {
-                  navigate("/Home");
+                  navigate("/");
                 });
               }}
               className="text-sm text-blue-600 underline"
