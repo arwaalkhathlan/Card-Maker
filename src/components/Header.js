@@ -1,8 +1,5 @@
-
-import Googlelogin from "./Googlelogin";
-
-import React from 'react';
-import '../styles/App.css';
+import React from "react";
+import "../styles/App.css";
 
 const Header = () => {
   return (
@@ -13,9 +10,9 @@ const Header = () => {
           alt="Logo"
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        <Googlelogin />
-      </div>
+      <div
+        style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+      ></div>
     </header>
   );
 };
