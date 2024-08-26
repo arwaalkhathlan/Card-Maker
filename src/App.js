@@ -1,23 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Signup from './pages/Signup';
+import Register from './pages/Register';
 import Login from './pages/Login';
-import { BrowserRouter as Router} from 'react-router-dom';
-import {Routes, Route} from 'react-router-dom';
+import { AuthProvider } from './context/authContext'; // Correct import for the AuthProvider
 
 function App() {
-
   return (
-    <Router>
-      <div>
-        <section>                              
-            <Routes>                                                                        <Route path="/" element={<Home/>}/>
-               <Route path="/signup" element={<Signup/>}/>
-               <Route path="/login" element={<Login/>}/>
+    <AuthProvider>
+      <Router>
+        <div>
+          <section>                              
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/Home" element={<Home />} />
+
             </Routes>                    
-        </section>
-      </div>
-    </Router>
+          </section>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

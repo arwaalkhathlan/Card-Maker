@@ -229,3 +229,38 @@ h3 {
 }
 
 
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050; /* Higher than Bootstrap modals if you use any */
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  animation: fadeIn 0.5s, fadeOut 0.5s 4.5s;
+}
+
+.popup-content {
+  padding: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

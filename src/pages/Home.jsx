@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/App.css";
+import { useAuth } from "../context/authContext";
 
 // components import
 import Footer from "../components/Footer";
@@ -15,7 +16,25 @@ import cardTemplate2 from "../images/card-template2.png";
 import cardTemplate3 from "../images/card-template3.png";
 import cardTemplate4 from "../images/card-template4.png";
 
+// Popup component
+const Popup = ({ message, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 5000); // Hide after 5 seconds
+    return () => clearTimeout(timer); // Cleanup the timer if component unmounts
+  }, [onClose]);
+
+  return (
+    <div className="popup">
+      <div className="popup-content">
+        <span>{message}</span>
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
+  const { currentUser, logout } = useAuth(); // Destructure logout from useAuth
+
   const [cards, setCards] = useState([
     { id: 1, backgroundImage: cardTemplate1, text: "" },
     { id: 2, backgroundImage: cardTemplate2, text: "" },
@@ -26,6 +45,23 @@ const Home = () => {
   const [inputText, setInputText] = useState("");
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [previewCard, setPreviewCard] = useState(null);
+  const [showLoginPopup, setShowLoginPopup] = useState(false); // State for login popup
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false); // State for logout popup
+
+  useEffect(() => {
+    if (currentUser) {
+      setShowLoginPopup(true); // Show the login popup when user is logged in
+    }
+  }, [currentUser]);
+
+  const handleLogout = async () => {
+    try {
+      await logout(); // Call the logout function
+      setShowLogoutPopup(true); // Show the logout popup
+    } catch (error) {
+      console.error("Logout failed", error); // Handle logout error
+    }
+  };
 
   const handleTextChange = (event) => {
     const newText = event.target.value;
@@ -99,6 +135,25 @@ const Home = () => {
   return (
     <div className="Home mt-5">
       <Header />
+
+      {/* Login Popup */}
+      {showLoginPopup && (
+        <Popup
+          message={`Hello ${
+            currentUser.displayName ? currentUser.displayName : currentUser.email
+          }, you are now logged in.`}
+          onClose={() => setShowLoginPopup(false)}
+        />
+      )}
+
+      {/* Logout Popup */}
+      {showLogoutPopup && (
+        <Popup
+          message="You have been logged out successfully."
+          onClose={() => setShowLogoutPopup(false)}
+        />
+      )}
+
       <div className="container">
         <div className="mb-4">
           <h1 className="Text-Title">عيد أضحى مبارك!</h1>
@@ -175,7 +230,7 @@ const Home = () => {
                   transform: "translate(-43%, 300%)",
                   textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                   zIndex: 1,
-                  width: "100%", 
+                  width: "100%",
                 }}
               >
                 {previewCard.text}
