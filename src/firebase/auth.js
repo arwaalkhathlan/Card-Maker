@@ -20,6 +20,8 @@ export const doSignInWithEmailAndPassword = (email, password) => {
 export const doSignInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(auth, provider);
+
+  // eslint-disable-next-line
   const user = result.user;
 
   // add user to firestore

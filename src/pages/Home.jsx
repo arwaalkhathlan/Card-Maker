@@ -202,6 +202,7 @@ const Home = () => {
       <div className="row container justify-content-center">
         <div className="col-md-6">
           <UploadCardButton onUpload={handleUpload} />
+
         </div>
       </div>
       {/* preview */}
