@@ -33,7 +33,7 @@ const Popup = ({ message, onClose }) => {
 };
 
 const Home = () => {
-  const { currentUser, logout } = useAuth(); // Destructure logout from useAuth
+  const { currentUser } = useAuth(); // Removed 'logout' from destructuring assignment
 
   const [cards, setCards] = useState([
     { id: 1, backgroundImage: cardTemplate1, text: "" },
@@ -53,15 +53,6 @@ const Home = () => {
       setShowLoginPopup(true); // Show the login popup when user is logged in
     }
   }, [currentUser]);
-
-  const handleLogout = async () => {
-    try {
-      await logout(); // Call the logout function
-      setShowLogoutPopup(true); // Show the logout popup
-    } catch (error) {
-      console.error("Logout failed", error); // Handle logout error
-    }
-  };
 
   const handleTextChange = (event) => {
     const newText = event.target.value;
@@ -202,7 +193,6 @@ const Home = () => {
       <div className="row container justify-content-center">
         <div className="col-md-6">
           <UploadCardButton onUpload={handleUpload} />
-
         </div>
       </div>
       {/* preview */}

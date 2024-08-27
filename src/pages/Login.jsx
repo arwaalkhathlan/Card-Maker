@@ -18,18 +18,27 @@ const Login = () => {
     e.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
-      await doSignInWithEmailAndPassword(email, password);
-      // doSendEmailVerification()
+      try {
+        await doSignInWithEmailAndPassword(email, password);
+        // Optional: You can redirect the user or display a success message here.
+      } catch (error) {
+        setErrorMessage("Invalid email or password. Please try again.");
+        setIsSigningIn(false); // Reset signing in state
+      }
     }
   };
 
-  const onGoogleSignIn = (e) => {
+  const onGoogleSignIn = async (e) => {
     e.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
-      doSignInWithGoogle().catch((err) => {
-        setIsSigningIn(false);
-      });
+      try {
+        await doSignInWithGoogle();
+        // Optional: You can redirect the user or display a success message here.
+      } catch (error) {
+        setErrorMessage("Failed to sign in with Google. Please try again.");
+        setIsSigningIn(false); // Reset signing in state
+      }
     }
   };
 
