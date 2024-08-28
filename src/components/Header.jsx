@@ -59,10 +59,10 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link className="text-sm text-blue-600 underline" to={"/login"}>
+            <Link className="Login text-sm text-blue-600 underline" to={"/login"}>
               Login
             </Link>
-            <Link className="text-sm text-blue-600 underline" to={"/register"}>
+            <Link className="Register text-sm text-blue-600 underline" to={"/register"}>
               Register New Account
             </Link>
           </>

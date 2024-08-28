@@ -264,3 +264,22 @@ h3 {
     opacity: 0;
   }
 }
+
+/* Download button */
+.Login {
+  background-color: #20c6df;
+  color: white;
+}
+
+.Login:hover {
+  outline-color: #f4f4f4;
+}
+
+/* Upload card button */
+
+.Register {
+  margin: 10px 0;
+  text-align: center;
+  background-color: #20c6df;
+  color: white;
+}
