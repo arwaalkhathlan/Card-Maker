@@ -8,14 +8,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url('https://greetingsdev.wetaan.com/bootstrap/images/bg/m_bg.png');
-  background-size: cover; 
+  background-image: url("https://greetingsdev.wetaan.com/bootstrap/images/bg/m_bg.png");
+  background-size: cover;
   background-position: center;
 }
 
-
 * {
-  font-family: 'Cairo';
+  font-family: "Cairo";
 }
 
 .text-input {
@@ -36,7 +35,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  width: 100% ;
+  width: 100%;
   margin: 10px;
 }
 
@@ -55,8 +54,7 @@ body {
 }
 
 /* Button hover effect */
-.DownloadButton:hoverو
-.upload-card-button:hover {
+.DownloadButton:hoverو .upload-card-button:hover {
   opacity: 0.9;
   outline: #f4f4f4 solid 1px;
 }
@@ -94,7 +92,6 @@ body {
 .upload-card-button .btn {
   cursor: pointer;
 }
-
 
 /* Text styles */
 .Text-Title {
@@ -155,7 +152,6 @@ h3 {
   margin-top: 10px;
   padding: 0;
 }
-
 
 /* Footer */
 
@@ -228,7 +224,6 @@ h3 {
   width: auto;
 }
 
-
 .popup {
   position: fixed;
   top: 20px;
@@ -265,11 +260,7 @@ h3 {
   }
 }
 
-/* Download button */
-.Login {
-  background-color: #20c6df;
-  color: white;
-}
+/* log in and sign in buttons */
 
 .Login:hover {
   outline-color: #f4f4f4;
@@ -277,9 +268,32 @@ h3 {
 
 /* Upload card button */
 
-.Register {
-  margin: 10px 0;
+.Register,
+.Login,
+.logout {
   text-align: center;
-  background-color: #20c6df;
   color: white;
+  padding: 6px;
+  border-radius: 10px;
+  margin: 2px;
+  text-decoration: none;
+}
+
+.Register {
+  outline: #24d0db solid 1px;
+  color: #24d0db;
+}
+
+.Login {
+  background-color: #20c6df;
+}
+
+.logout {
+  background-color: #24d0db;
+}
+
+.Register:hover .Login:hover .logout:hover {
+  outline-color: #f4f4f4;
+  outline: #f4f4f4 solid 1px;
+  opacity: 0.9;
 }

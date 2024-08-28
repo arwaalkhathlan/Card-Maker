@@ -52,18 +52,18 @@ const Header = () => {
           <>
             <button
               onClick={handleLogout} // Use handleLogout here
-              className="text-sm text-blue-600 underline"
+              className="logout text-sm text-blue-600 underline"
             >
-              Logout
+              تسجيل الخروج
             </button>
           </>
         ) : (
           <>
             <Link className="Login text-sm text-blue-600 underline" to={"/login"}>
-              Login
+              تسجيل دخول
             </Link>
             <Link className="Register text-sm text-blue-600 underline" to={"/register"}>
-              Register New Account
+              حساب جديد
             </Link>
           </>
         )}
