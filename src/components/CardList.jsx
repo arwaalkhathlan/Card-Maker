@@ -1,17 +1,23 @@
-import React from 'react';
-import Card from './Card';
+import React from "react";
+import Card from "./Card";
 
 const CardList = ({ cards, onCardClick, selectedCardId }) => {
   return (
-    <div className="container">
-      {cards.map(card => (
-        <Card
-          key={card.id}
-          card={card}
-          onCardClick={onCardClick}
-          selectedCardId={selectedCardId}
-        />
-      ))}
+    <div className=" container">
+      <div className="row">
+        {cards.map((card) => (
+          <div
+            key={card.id}
+            className="col-12 col-md-6 col-lg-4 mb-4 d-flex justify-content-center"
+          >
+            <Card
+              card={card}
+              onCardClick={onCardClick}
+              selectedCardId={selectedCardId}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

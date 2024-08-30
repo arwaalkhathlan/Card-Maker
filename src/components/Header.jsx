@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "../styles/App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { doSignOut } from "../firebase/auth";
+import { Toast } from 'react-bootstrap'; // Import Toast from Bootstrap
 
-// Popup component
+// Popup component using Bootstrap Toast
 const Popup = ({ message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 5000); // Hide after 5 seconds
@@ -12,11 +12,15 @@ const Popup = ({ message, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="popup">
-      <div className="popup-content">
-        <span>{message}</span>
-      </div>
-    </div>
+    <Toast
+      onClose={onClose}
+      show={true}
+      delay={5000}
+      autohide
+      className="position-fixed top-0 start-50 translate-middle-x mt-3 bg-dark text-light"
+    >
+      <Toast.Body>{message}</Toast.Body>
+    </Toast>
   );
 };
 
@@ -38,31 +42,28 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
+    <header className="bg-transparent py-3 d-flex align-items-center">
       <div className="logo">
         <img
           src="https://greetingsdev.wetaan.com/bootstrap/images/logos/logo_wetaan.png"
           alt="Logo"
+          className="img-fluid"
         />
       </div>
-      <div
-        style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-      >
+      <div className="ms-auto">
         {userLoggedIn ? (
-          <>
-            <button
-              onClick={handleLogout} // Use handleLogout here
-              className="logout text-sm text-blue-600 underline"
-            >
-              تسجيل الخروج
-            </button>
-          </>
+          <button
+            onClick={handleLogout}
+            className="logout btn btn-link text-decoration-none text-primary"
+          >
+            تسجيل الخروج
+          </button>
         ) : (
           <>
-            <Link className="Login text-sm text-blue-600 underline" to={"/login"}>
+            <Link className="Login btn btn-link text-white text-decoration-none me-2" to={"/login"}>
               تسجيل دخول
             </Link>
-            <Link className="Register text-sm text-blue-600 underline" to={"/register"}>
+            <Link className="Register btn btn-link text-white text-decoration-none text-primary" to={"/register"}>
               حساب جديد
             </Link>
           </>

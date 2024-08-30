@@ -24,10 +24,8 @@ const Popup = ({ message, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="popup">
-      <div className="popup-content">
-        <span>{message}</span>
-      </div>
+    <div className="position-fixed top-0 start-50 translate-middle-x mt-3 bg-dark text-white p-3 rounded">
+      <div>{message}</div>
     </div>
   );
 };
@@ -124,14 +122,16 @@ const Home = () => {
   };
 
   return (
-    <div className="Home mt-5">
+    <div className="Home container mt-5 d-flex flex-column align-items-center">
       <Header />
 
       {/* Login Popup */}
       {showLoginPopup && (
         <Popup
           message={`Hello ${
-            currentUser.displayName ? currentUser.displayName : currentUser.email
+            currentUser.displayName
+              ? currentUser.displayName
+              : currentUser.email
           }, you are now logged in.`}
           onClose={() => setShowLoginPopup(false)}
         />
@@ -145,67 +145,60 @@ const Home = () => {
         />
       )}
 
-      <div className="container">
-        <div className="mb-4">
-          <h1 className="Text-Title">عيد أضحى مبارك!</h1>
-          <h2>
-            كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.
-          </h2>
-          <h3>اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم</h3>
-        </div>
+      <div className="text-center mb-4">
+        <h1 className="Text-Title text-primary">عيد أضحى مبارك!</h1>
+        <h2 className="text-white">
+          كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.
+        </h2>
+        <h3 className="text-white">
+          اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم
+        </h3>
       </div>
-      <div className="row">
-        <div className="col-12">
-          <CardList
-            cards={cards}
-            onCardClick={handleCardClick}
-            selectedCardId={selectedCardId}
-          />
-        </div>
+
+      <div className=" container d-flex justify-content-center">
+        <CardList
+          cards={cards}
+          onCardClick={handleCardClick}
+          selectedCardId={selectedCardId}
+        />
       </div>
+
       {/* the main text box */}
-      <div className="row container justify-content-center">
-        <div className="col-md-6">
-          <input
-            type="text"
-            value={inputText}
-            onChange={handleTextChange}
-            placeholder="أختكم أروى"
-            className="form-control text-input"
-            disabled={selectedCardId === null}
-          />
-        </div>
+      <div className="my-4 w-100 d-flex justify-content-center">
+        <input
+          type="text"
+          value={inputText}
+          onChange={handleTextChange}
+          placeholder="أختكم أروى"
+          className="form-control text-input w-50"
+          disabled={selectedCardId === null}
+        />
       </div>
+
       {/* Buttons */}
-      <div className="row container justify-content-center">
-        <div className="col-md-6">
-          <DownloadButton
-            handleDownload={handleDownload}
-            disabled={selectedCardId === null}
-          />
-          <PreviewButton
-            className="btn btn-primary"
-            handlePreview={handlePreview}
-            disabled={selectedCardId === null}
-          />
-        </div>
+      <div className="d-flex justify-content-center mb-4">
+        <DownloadButton
+          handleDownload={handleDownload}
+          disabled={selectedCardId === null}
+        />
+        <PreviewButton
+          handlePreview={handlePreview}
+          disabled={selectedCardId === null}
+        />
       </div>
-      <div className="row container justify-content-center">
-        <div className="col-md-6">
-          <UploadCardButton onUpload={handleUpload} />
-        </div>
-      </div>
+
+      <UploadCardButton onUpload={handleUpload} />
+
       {/* preview */}
       {previewCard && (
-        <div className="container d-flex justify-content-center align-items-center">
-          <div className="col-md-3 position-relative">
+        <div className="d-flex justify-content-center align-items-center mt-4">
+          <div className="position-relative">
             <div
               style={{
                 backgroundImage: `url(${previewCard.backgroundImage})`,
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",
-                width: "100%",
-                minWidth: "350px",
+                width: "350px",
                 height: "300px",
                 border: "transparent",
                 position: "relative",
@@ -218,7 +211,7 @@ const Home = () => {
                   color: "white",
                   top: "50%",
                   left: "50%",
-                  transform: "translate(-43%, 300%)",
+                  transform: "translate(-50%, -50%)",
                   textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                   zIndex: 1,
                   width: "100%",
