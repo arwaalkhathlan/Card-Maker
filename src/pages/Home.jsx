@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/App.css";
 import { useAuth } from "../context/authContext";
 
-// components import
+// Components import
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import UploadCardButton from "../components/UploadCardButton";
@@ -10,7 +10,7 @@ import CardList from "../components/CardList";
 import PreviewButton from "../components/PreviewButton";
 import DownloadButton from "../components/DownloadButton";
 
-// images import
+// Images import
 import cardTemplate1 from "../images/card-template1.png";
 import cardTemplate2 from "../images/card-template2.png";
 import cardTemplate3 from "../images/card-template3.png";
@@ -20,7 +20,7 @@ import cardTemplate4 from "../images/card-template4.png";
 const Popup = ({ message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 5000); // Hide after 5 seconds
-    return () => clearTimeout(timer); // Cleanup the timer if component unmounts
+    return () => clearTimeout(timer);
   }, [onClose]);
 
   return (
@@ -31,7 +31,8 @@ const Popup = ({ message, onClose }) => {
 };
 
 const Home = () => {
-  const { currentUser } = useAuth(); // Removed 'logout' from destructuring assignment
+  const { currentUser } = useAuth();
+
 
   const [cards, setCards] = useState([
     { id: 1, backgroundImage: cardTemplate1, text: "" },
@@ -43,14 +44,15 @@ const Home = () => {
   const [inputText, setInputText] = useState("");
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [previewCard, setPreviewCard] = useState(null);
-  const [showLoginPopup, setShowLoginPopup] = useState(false); // State for login popup
-  const [showLogoutPopup, setShowLogoutPopup] = useState(false); // State for logout popup
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
-      setShowLoginPopup(true); // Show the login popup when user is logged in
+      setShowLoginPopup(true); 
     }
   }, [currentUser]);
+
 
   const handleTextChange = (event) => {
     const newText = event.target.value;
@@ -112,6 +114,8 @@ const Home = () => {
     };
   };
 
+  
+
   const handleUpload = (uploadedImage) => {
     const newCard = {
       id: cards.length + 1,
@@ -121,6 +125,7 @@ const Home = () => {
     setCards([...cards, newCard]);
   };
 
+
   return (
     <div className="Home container mt-5 d-flex flex-column align-items-center">
       <Header />
@@ -129,9 +134,7 @@ const Home = () => {
       {showLoginPopup && (
         <Popup
           message={`Hello ${
-            currentUser.displayName
-              ? currentUser.displayName
-              : currentUser.email
+            currentUser.displayName ? currentUser.displayName : currentUser.email
           }, you are now logged in.`}
           onClose={() => setShowLoginPopup(false)}
         />
@@ -155,7 +158,7 @@ const Home = () => {
         </h3>
       </div>
 
-      <div className=" container d-flex justify-content-center">
+      <div className="container d-flex justify-content-center">
         <CardList
           cards={cards}
           onCardClick={handleCardClick}
@@ -163,7 +166,7 @@ const Home = () => {
         />
       </div>
 
-      {/* the main text box */}
+      {/* Main text box */}
       <div className="my-4 w-100 d-flex justify-content-center">
         <input
           type="text"
@@ -189,7 +192,7 @@ const Home = () => {
 
       <UploadCardButton onUpload={handleUpload} />
 
-      {/* preview */}
+      {/* Preview */}
       {previewCard && (
         <div className="d-flex justify-content-center align-items-center mt-4">
           <div className="position-relative">
@@ -223,6 +226,7 @@ const Home = () => {
           </div>
         </div>
       )}
+
       <Footer />
     </div>
   );
