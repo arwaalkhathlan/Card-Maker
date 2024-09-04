@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/App.css";
 import { useAuth } from "../context/authContext";
+import Draggable from "react-draggable"; // Import react-draggable
 
 // Components import
 import Footer from "../components/Footer";
@@ -33,12 +34,11 @@ const Popup = ({ message, onClose }) => {
 const Home = () => {
   const { currentUser } = useAuth();
 
-
   const [cards, setCards] = useState([
-    { id: 1, backgroundImage: cardTemplate1, text: "" },
-    { id: 2, backgroundImage: cardTemplate2, text: "" },
-    { id: 3, backgroundImage: cardTemplate3, text: "" },
-    { id: 4, backgroundImage: cardTemplate4, text: "" },
+    { id: 1, backgroundImage: cardTemplate1, text: "", textPosition: { x: 50, y: 50 } },
+    { id: 2, backgroundImage: cardTemplate2, text: "", textPosition: { x: 50, y: 50 } },
+    { id: 3, backgroundImage: cardTemplate3, text: "", textPosition: { x: 50, y: 50 } },
+    { id: 4, backgroundImage: cardTemplate4, text: "", textPosition: { x: 50, y: 50 } },
   ]);
 
   const [inputText, setInputText] = useState("");
@@ -52,7 +52,6 @@ const Home = () => {
       setShowLoginPopup(true); 
     }
   }, [currentUser]);
-
 
   const handleTextChange = (event) => {
     const newText = event.target.value;
@@ -102,8 +101,8 @@ const Home = () => {
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
 
-      const textX = canvas.width / 2;
-      const textY = canvas.height / 2;
+      const textX = (canvas.width * card.textPosition.x) / 100;
+      const textY = (canvas.height * card.textPosition.y) / 100;
 
       ctx.fillText(card.text, textX, textY);
 
@@ -114,121 +113,151 @@ const Home = () => {
     };
   };
 
-  
-
   const handleUpload = (uploadedImage) => {
     const newCard = {
       id: cards.length + 1,
       backgroundImage: uploadedImage,
       text: "",
+      textPosition: { x: 50, y: 50 },
     };
     setCards([...cards, newCard]);
   };
 
+  const handleTextDrag = (e, data) => {
+    if (previewCard) {
+      const newPosition = {
+        x: (data.x / -300) * 100, 
+        y: (data.y / 300) * 100  
+      };
+
+      setPreviewCard({
+        ...previewCard,
+        textPosition: newPosition
+      });
+
+
+      setCards(
+        cards.map((card) =>
+          card.id === previewCard.id
+            ? { ...card, textPosition: newPosition }
+            : card
+        )
+      );
+    }
+  };
 
   return (
-    <div className="Home container mt-5 d-flex flex-column align-items-center">
+    <>
       <Header />
+      <div className="Home container mt-5 d-flex flex-column align-items-center">
 
-      {/* Login Popup */}
-      {showLoginPopup && (
-        <Popup
-          message={`Hello ${
-            currentUser.displayName ? currentUser.displayName : currentUser.email
-          }, you are now logged in.`}
-          onClose={() => setShowLoginPopup(false)}
-        />
-      )}
+        {/* Login Popup */}
+        {showLoginPopup && (
+          <Popup
+            message={`Hello ${
+              currentUser.displayName ? currentUser.displayName : currentUser.email
+            }, you are now logged in.`}
+            onClose={() => setShowLoginPopup(false)}
+          />
+        )}
 
-      {/* Logout Popup */}
-      {showLogoutPopup && (
-        <Popup
-          message="You have been logged out successfully."
-          onClose={() => setShowLogoutPopup(false)}
-        />
-      )}
+        {/* Logout Popup */}
+        {showLogoutPopup && (
+          <Popup
+            message="You have been logged out successfully."
+            onClose={() => setShowLogoutPopup(false)}
+          />
+        )}
 
-      <div className="text-center mb-4">
-        <h1 className="Text-Title text-primary">عيد أضحى مبارك!</h1>
-        <h2 className="text-white">
-          كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.
-        </h2>
-        <h3 className="text-white">
-          اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم
-        </h3>
-      </div>
+        <div className="text-center mb-4">
+          <h1 className="Text-Title text-primary">عيد أضحى مبارك!</h1>
+          <h2 className="text-white">
+            كل عام وأنتم بخير، أعاده الله علينا وعليكم بالصحة والسعادة والسلام.
+          </h2>
+          <h3 className="text-white">
+            اختر البطاقة التي تناسبك وقم بكتابة اسمك على التصميم
+          </h3>
+        </div>
 
-      <div className="container d-flex justify-content-center">
-        <CardList
-          cards={cards}
-          onCardClick={handleCardClick}
-          selectedCardId={selectedCardId}
-        />
-      </div>
+        <div className="container d-flex justify-content-center">
+          <CardList
+            cards={cards}
+            onCardClick={handleCardClick}
+            selectedCardId={selectedCardId}
+          />
+        </div>
 
-      {/* Main text box */}
-      <div className="my-4 w-100 d-flex justify-content-center">
-        <input
-          type="text"
-          value={inputText}
-          onChange={handleTextChange}
-          placeholder="أختكم أروى"
-          className="form-control text-input w-50"
-          disabled={selectedCardId === null}
-        />
-      </div>
+        {/* Main text box */}
+        <div className="my-4 w-100 d-flex justify-content-center">
+          <input
+            type="text"
+            value={inputText}
+            onChange={handleTextChange}
+            placeholder="أختكم أروى"
+            className="form-control text-input w-50"
+            disabled={selectedCardId === null}
+          />
+        </div>
 
-      {/* Buttons */}
-      <div className="d-flex justify-content-center mb-4">
-        <DownloadButton
-          handleDownload={handleDownload}
-          disabled={selectedCardId === null}
-        />
-        <PreviewButton
-          handlePreview={handlePreview}
-          disabled={selectedCardId === null}
-        />
-      </div>
+        {/* Buttons */}
+        <div className="d-flex justify-content-center mb-4">
+          <DownloadButton
+            handleDownload={handleDownload}
+            disabled={selectedCardId === null}
+          />
+          <PreviewButton
+            handlePreview={handlePreview}
+            disabled={selectedCardId === null}
+          />
+        </div>
 
-      <UploadCardButton onUpload={handleUpload} />
+        <UploadCardButton onUpload={handleUpload} />
 
-      {/* Preview */}
-      {previewCard && (
-        <div className="d-flex justify-content-center align-items-center mt-4">
-          <div className="position-relative">
-            <div
-              style={{
-                backgroundImage: `url(${previewCard.backgroundImage})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                width: "350px",
-                height: "300px",
-                border: "transparent",
-                position: "relative",
-              }}
-            >
-              <p
-                className="position-absolute fw-bold text-center"
+        {/* Preview */}
+        {previewCard && (
+          <div className="d-flex justify-content-center align-items-center mt-4">
+            <div className="position-relative">
+              <div
                 style={{
-                  fontSize: "24px",
-                  color: "white",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-                  zIndex: 1,
-                  width: "100%",
+                  backgroundImage: `url(${previewCard.backgroundImage})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  width: "350px",
+                  height: "300px",
+                  border: "transparent",
+                  position: "relative",
                 }}
               >
-                {previewCard.text}
-              </p>
+                <Draggable
+                  onDrag={handleTextDrag}
+                  position={{
+                    x: (previewCard.textPosition.x / 100) * -300, 
+                    y: (previewCard.textPosition.y / 100) * 300  
+                  }}
+                  bounds="parent"
+                >
+                  <p
+                    className="position-absolute fw-bold text-center"
+                    style={{
+                      fontSize: "24px",
+                      color: "white",
+                      transform: "translate(-50%, -50%)",
+                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                      zIndex: 1,
+                      cursor: "move",
+                    }}
+                  >
+                    {previewCard.text}
+                  </p>
+                </Draggable>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 };
 

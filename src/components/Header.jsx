@@ -41,14 +41,20 @@ const Header = () => {
       });
   };
 
+  const handleLogoClick = () => {
+    navigate("/"); // Navigate to the home page when the logo is clicked
+  };
+
   return (
     <header className="bg-transparent py-3 d-flex align-items-center">
       <div className="logo">
-        <img
-          src="https://greetingsdev.wetaan.com/bootstrap/images/logos/logo_wetaan.png"
-          alt="Logo"
-          className="img-fluid"
-        />
+        <button onClick={handleLogoClick} className="border-0 bg-transparent p-0">
+          <img
+            src="https://greetingsdev.wetaan.com/bootstrap/images/logos/logo_wetaan.png"
+            alt="Logo"
+            className="img-fluid"
+          />
+        </button>
       </div>
       <div className="ms-auto">
         {userLoggedIn ? (
