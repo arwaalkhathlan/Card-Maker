@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
+import { useAuth } from '../context/AuthContext.js';
 import { doCreateUserWithEmailAndPassword } from '../firebase/auth';
 import Header from '../components/Header';
 

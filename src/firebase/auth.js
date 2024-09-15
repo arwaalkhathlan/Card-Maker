@@ -9,6 +9,9 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 
+import { db } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
+
 export const doCreateUserWithEmailAndPassword = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
@@ -25,6 +28,12 @@ export const doSignInWithGoogle = async () => {
   const user = result.user;
 
   // add user to firestore
+  const userRef = doc(db, "users", user.uid);
+  await setDoc(userRef, {
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+  });
 };
 
 export const doSignOut = () => {

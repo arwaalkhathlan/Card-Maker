@@ -4,7 +4,7 @@ import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
 } from "../firebase/auth";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext.js";
 import Header from "../components/Header";
 
 const Login = () => {
@@ -119,7 +119,11 @@ const Login = () => {
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
                 alt="Google Logo"
-                style={{ width: "20px", marginRight: "8px", marginBottom: "3px" }}
+                style={{
+                  width: "20px",
+                  marginRight: "8px",
+                  marginBottom: "3px",
+                }}
               />
             </button>
           </div>

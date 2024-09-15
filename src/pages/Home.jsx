@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../styles/App.css";
-import { useAuth } from "../context/authContext";
-import Draggable from "react-draggable"; // Import react-draggable
+import { useAuth } from "../context/AuthContext.js";
+import Draggable from "react-draggable"; 
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase.js";
 
 // Components import
 import Footer from "../components/Footer";
@@ -17,10 +19,11 @@ import cardTemplate2 from "../images/card-template2.png";
 import cardTemplate3 from "../images/card-template3.png";
 import cardTemplate4 from "../images/card-template4.png";
 
+
 // Popup component
 const Popup = ({ message, onClose }) => {
   useEffect(() => {
-    const timer = setTimeout(onClose, 5000); // Hide after 5 seconds
+    const timer = setTimeout(onClose, 5000);
     return () => clearTimeout(timer);
   }, [onClose]);
 
@@ -35,11 +38,32 @@ const Home = () => {
   const { currentUser } = useAuth();
 
   const [cards, setCards] = useState([
-    { id: 1, backgroundImage: cardTemplate1, text: "", textPosition: { x: 50, y: 50 } },
-    { id: 2, backgroundImage: cardTemplate2, text: "", textPosition: { x: 50, y: 50 } },
-    { id: 3, backgroundImage: cardTemplate3, text: "", textPosition: { x: 50, y: 50 } },
-    { id: 4, backgroundImage: cardTemplate4, text: "", textPosition: { x: 50, y: 50 } },
+    {
+      id: 1,
+      backgroundImage: cardTemplate1,
+      text: "",
+      textPosition: { x: 50, y: 50 },
+    },
+    {
+      id: 2,
+      backgroundImage: cardTemplate2,
+      text: "",
+      textPosition: { x: 50, y: 50 },
+    },
+    {
+      id: 3,
+      backgroundImage: cardTemplate3,
+      text: "",
+      textPosition: { x: 50, y: 50 },
+    },
+    {
+      id: 4,
+      backgroundImage: cardTemplate4,
+      text: "",
+      textPosition: { x: 50, y: 50 },
+    },
   ]);
+
 
   const [inputText, setInputText] = useState("");
   const [selectedCardId, setSelectedCardId] = useState(null);
@@ -49,7 +73,7 @@ const Home = () => {
 
   useEffect(() => {
     if (currentUser) {
-      setShowLoginPopup(true); 
+      setShowLoginPopup(true);
     }
   }, [currentUser]);
 
@@ -97,12 +121,12 @@ const Home = () => {
       ctx.drawImage(img, 0, 0);
 
       const fontSize = Math.min(canvas.width, canvas.height) / 10;
-      ctx.font = `${fontSize}px Arial`;
+      ctx.font = `${fontSize}px cario`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
 
-      const textX = (canvas.width * card.textPosition.x) / 100;
-      const textY = (canvas.height * card.textPosition.y) / 100;
+      const textX = (canvas.width * card.textPosition.x) / 85;
+      const textY = (canvas.height * card.textPosition.y) / 90;
 
       ctx.fillText(card.text, textX, textY);
 
@@ -126,15 +150,14 @@ const Home = () => {
   const handleTextDrag = (e, data) => {
     if (previewCard) {
       const newPosition = {
-        x: (data.x / -300) * 100, 
-        y: (data.y / 300) * 100  
+        x: (data.x / -300) * 100,
+        y: (data.y / 300) * 100,
       };
 
       setPreviewCard({
         ...previewCard,
-        textPosition: newPosition
+        textPosition: newPosition,
       });
-
 
       setCards(
         cards.map((card) =>
@@ -146,16 +169,39 @@ const Home = () => {
     }
   };
 
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    if (!currentUser) {
+      console.error("User not logged in");
+      return;
+    }
+    
+    try {
+      await addDoc(collection(db, "cards"), {
+        userId: currentUser.uid,
+        cardId: selectedCardId,
+        text: inputText,
+        textPosition: cards.find(card => card.id === selectedCardId)?.textPosition,
+        createdAt: new Date()
+      });
+      console.log("Card saved successfully");
+    } catch (error) {
+      console.error("Error saving card:", error);
+    }
+  };
+
   return (
     <>
       <Header />
       <div className="Home container mt-5 d-flex flex-column align-items-center">
-
         {/* Login Popup */}
         {showLoginPopup && (
           <Popup
             message={`Hello ${
-              currentUser.displayName ? currentUser.displayName : currentUser.email
+              currentUser.displayName
+                ? currentUser.displayName
+                : currentUser.email
             }, you are now logged in.`}
             onClose={() => setShowLoginPopup(false)}
           />
@@ -231,8 +277,8 @@ const Home = () => {
                 <Draggable
                   onDrag={handleTextDrag}
                   position={{
-                    x: (previewCard.textPosition.x / 100) * -300, 
-                    y: (previewCard.textPosition.y / 100) * 300  
+                    x: (previewCard.textPosition.x / 100) * -300,
+                    y: (previewCard.textPosition.y / 100) * 300,
                   }}
                   bounds="parent"
                 >
@@ -254,6 +300,8 @@ const Home = () => {
             </div>
           </div>
         )}
+
+        <button onClick={handleAdd} className="btn btn-primary mt-3">Save Card</button>  
 
         <Footer />
       </div>

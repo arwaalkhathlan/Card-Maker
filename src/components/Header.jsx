@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext.js";
 import { doSignOut } from "../firebase/auth";
-import { Toast } from 'react-bootstrap'; // Import Toast from Bootstrap
+import { Toast } from "react-bootstrap"; // Import Toast from Bootstrap
 
 // Popup component using Bootstrap Toast
 const Popup = ({ message, onClose }) => {
@@ -27,7 +27,7 @@ const Popup = ({ message, onClose }) => {
 const Header = () => {
   const navigate = useNavigate();
   const { userLoggedIn } = useAuth();
-  
+
   const [showLogoutPopup, setShowLogoutPopup] = useState(false); // State for logout popup
 
   const handleLogout = () => {
@@ -48,7 +48,10 @@ const Header = () => {
   return (
     <header className="bg-transparent py-3 d-flex align-items-center">
       <div className="logo">
-        <button onClick={handleLogoClick} className="border-0 bg-transparent p-0">
+        <button
+          onClick={handleLogoClick}
+          className="border-0 bg-transparent p-0"
+        >
           <img
             src="https://greetingsdev.wetaan.com/bootstrap/images/logos/logo_wetaan.png"
             alt="Logo"
@@ -66,10 +69,16 @@ const Header = () => {
           </button>
         ) : (
           <>
-            <Link className="Login btn btn-link text-white text-decoration-none me-2" to={"/login"}>
+            <Link
+              className="Login btn btn-link text-white text-decoration-none me-2"
+              to={"/login"}
+            >
               تسجيل دخول
             </Link>
-            <Link className="Register btn btn-link text-white text-decoration-none text-primary" to={"/register"}>
+            <Link
+              className="Register btn btn-link text-white text-decoration-none text-primary"
+              to={"/register"}
+            >
               حساب جديد
             </Link>
           </>
