@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "../styles/App.css";
 import { useAuth } from "../context/AuthContext.js";
 import Draggable from "react-draggable"; 
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/firebase.js";
+import { collection, addDoc, getDocs, query, where, updateDoc, doc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../firebase/firebase.js";
 
 // Components import
 import Footer from "../components/Footer";
@@ -39,33 +40,35 @@ const Popup = ({ message, onClose }) => {
 const Home = () => {
   const { currentUser } = useAuth();
 
-  const [cards, setCards] = useState([
+  const defaultCards = useMemo(() => [
     {
-      id: 1,
+      id: 'default1',
       backgroundImage: cardTemplate1,
       text: "",
       textPosition: { x: 50, y: 50 },
     },
     {
-      id: 2,
+      id: 'default2',
       backgroundImage: cardTemplate2,
       text: "",
       textPosition: { x: 50, y: 50 },
     },
     {
-      id: 3,
+      id: 'default3',
       backgroundImage: cardTemplate3,
       text: "",
       textPosition: { x: 50, y: 50 },
     },
     {
-      id: 4,
+      id: 'default4',
       backgroundImage: cardTemplate4,
       text: "",
       textPosition: { x: 50, y: 50 },
     },
-  ]);
+  ], []); // Empty dependency array means this will only be created once
 
+  const [userCards, setUserCards] = useState([]);
+  const [allCards, setAllCards] = useState([...defaultCards]);
 
   const [inputText, setInputText] = useState("");
   const [selectedCardId, setSelectedCardId] = useState(null);
@@ -73,40 +76,78 @@ const Home = () => {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
+  const fetchUserCards = useCallback(async () => {
+    if (!currentUser) return;
+
+    try {
+      const q = query(collection(db, "cards"), where("userId", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      const fetchedUserCards = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          backgroundImage: data.backgroundImageUrl,
+          text: data.text || "",
+          textPosition: data.textPosition || { x: 50, y: 50 },
+        };
+      });
+      setUserCards(fetchedUserCards);
+      setAllCards([...defaultCards, ...fetchedUserCards]);
+    } catch (error) {
+      console.error("Error fetching user cards:", error);
+    }
+  }, [currentUser, defaultCards]);
+
   useEffect(() => {
     if (currentUser) {
       setShowLoginPopup(true);
+      fetchUserCards();
     }
-  }, [currentUser]);
+  }, [currentUser, fetchUserCards]);
 
-  const handleTextChange = (event) => {
+  const handleTextChange = async (event) => {
     const newText = event.target.value;
     setInputText(newText);
     if (selectedCardId !== null) {
-      setCards(
-        cards.map((card) =>
-          card.id === selectedCardId ? { ...card, text: newText } : card
-        )
+      const updatedAllCards = allCards.map((card) =>
+        card.id === selectedCardId ? { ...card, text: newText } : card
       );
+      setAllCards(updatedAllCards);
+
+      // Update the card in the database if it's a user card
+      const selectedCard = updatedAllCards.find(card => card.id === selectedCardId);
+      if (typeof selectedCard.id === 'string' && selectedCard.id.startsWith('user_')) {
+        try {
+          await updateDoc(doc(db, "cards", selectedCard.id), {
+            text: newText,
+          });
+          setUserCards(userCards.map(card => 
+            card.id === selectedCard.id ? { ...card, text: newText } : card
+          ));
+        } catch (error) {
+          console.error("Error updating card:", error);
+        }
+      }
     }
   };
 
   const handleCardClick = (id) => {
     setSelectedCardId(id);
-    const selectedCard = cards.find((card) => card.id === id);
+    const selectedCard = allCards.find((card) => card.id === id);
     setInputText(selectedCard.text);
   };
 
   const handlePreview = () => {
     if (selectedCardId !== null) {
-      const card = cards.find((card) => card.id === selectedCardId);
+      const card = allCards.find((card) => card.id === selectedCardId);
       setPreviewCard(card);
     }
   };
 
   const handleDownload = () => {
     if (selectedCardId !== null) {
-      const card = cards.find((card) => card.id === selectedCardId);
+      const card = allCards.find((card) => card.id === selectedCardId);
       downloadCard(card);
     }
   };
@@ -116,37 +157,52 @@ const Home = () => {
     const ctx = canvas.getContext("2d");
     const img = new Image();
 
-    img.src = card.backgroundImage;
+    // Set crossOrigin to anonymous
+    img.crossOrigin = "anonymous";
+
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
       const fontSize = Math.min(canvas.width, canvas.height) / 10;
-      ctx.font = `${fontSize}px cario`;
+      ctx.font = `${fontSize}px Arial`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
 
-      const textX = (canvas.width * card.textPosition.x) / 85;
-      const textY = (canvas.height * card.textPosition.y) / 90;
+      const textX = (canvas.width * card.textPosition.x) / 100;
+      const textY = (canvas.height * card.textPosition.y) / 100;
 
       ctx.fillText(card.text, textX, textY);
 
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
-      link.download = "card.png";
-      link.click();
+      // Use toBlob instead of toDataURL
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "card.png";
+        link.click();
+        URL.revokeObjectURL(url);
+      });
     };
+
+    img.onerror = () => {
+      console.error("Error loading image");
+      // Optionally, show an error message to the user
+    };
+
+    img.src = card.backgroundImage;
   };
 
   const handleUpload = (uploadedImage) => {
     const newCard = {
-      id: cards.length + 1,
+      id: `user_${Date.now()}`,
       backgroundImage: uploadedImage,
       text: "",
       textPosition: { x: 50, y: 50 },
     };
-    setCards([...cards, newCard]);
+    setUserCards([...userCards, newCard]);
+    setAllCards([...allCards, newCard]);
   };
 
   const handleTextDrag = (e, data) => {
@@ -161,8 +217,8 @@ const Home = () => {
         textPosition: newPosition,
       });
 
-      setCards(
-        cards.map((card) =>
+      setAllCards(
+        allCards.map((card) =>
           card.id === previewCard.id
             ? { ...card, textPosition: newPosition }
             : card
@@ -174,18 +230,39 @@ const Home = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (!currentUser) {
-      console.error("User not logged in");
-      return;
-    }
+    if (!currentUser || selectedCardId === null) return;
     
     try {
-      await addDoc(collection(db, "cards"), {
+      const selectedCard = allCards.find(card => card.id === selectedCardId);
+      
+      // Upload image to Firebase Storage
+      const imageBlob = await fetch(selectedCard.backgroundImage).then(r => r.blob());
+      const imagePath = `cardBackgrounds/${currentUser.uid}/${Date.now()}.png`;
+      const storageRef = ref(storage, imagePath);
+      await uploadBytes(storageRef, imageBlob);
+      
+      // Get the download URL
+      const backgroundImageUrl = await getDownloadURL(storageRef);
+      
+      const newCardData = {
         userId: currentUser.uid,
-        cardId: selectedCardId,
+        text: selectedCard.text,
+        textPosition: selectedCard.textPosition,
+        backgroundImageUrl: backgroundImageUrl,
         createdAt: new Date()
-      });
+      };
+      
+      const docRef = await addDoc(collection(db, "cards"), newCardData);
       console.log("Card saved successfully");
+      
+      const newCard = {
+        id: docRef.id,
+        ...newCardData,
+        backgroundImage: backgroundImageUrl,
+      };
+      
+      setUserCards([...userCards, newCard]);
+      setAllCards([...allCards, newCard]);
     } catch (error) {
       console.error("Error saving card:", error);
     }
@@ -227,7 +304,7 @@ const Home = () => {
 
         <div className="container d-flex justify-content-center">
           <CardList
-            cards={cards}
+            cards={allCards}
             onCardClick={handleCardClick}
             selectedCardId={selectedCardId}
           />
