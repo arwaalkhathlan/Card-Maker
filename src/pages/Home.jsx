@@ -34,6 +34,8 @@ const Popup = ({ message, onClose }) => {
   );
 };
 
+
+
 const Home = () => {
   const { currentUser } = useAuth();
 
@@ -181,8 +183,6 @@ const Home = () => {
       await addDoc(collection(db, "cards"), {
         userId: currentUser.uid,
         cardId: selectedCardId,
-        text: inputText,
-        textPosition: cards.find(card => card.id === selectedCardId)?.textPosition,
         createdAt: new Date()
       });
       console.log("Card saved successfully");
