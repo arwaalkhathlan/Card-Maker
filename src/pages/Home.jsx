@@ -166,12 +166,12 @@ const Home = () => {
       ctx.drawImage(img, 0, 0);
 
       const fontSize = Math.min(canvas.width, canvas.height) / 10;
-      ctx.font = `${fontSize}px Arial`;
+      ctx.font = `${fontSize}px cario`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
 
-      const textX = (canvas.width * card.textPosition.x) / 100;
-      const textY = (canvas.height * card.textPosition.y) / 100;
+      const textX = (canvas.width * card.textPosition.x) / 92;
+      const textY = (canvas.height * card.textPosition.y) / 89;
 
       ctx.fillText(card.text, textX, textY);
 
@@ -365,7 +365,6 @@ const Home = () => {
                       fontSize: "24px",
                       color: "white",
                       transform: "translate(-50%, -50%)",
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                       zIndex: 1,
                       cursor: "move",
                     }}
