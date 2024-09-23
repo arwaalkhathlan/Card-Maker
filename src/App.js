@@ -8,7 +8,8 @@ import {
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import { AuthProvider } from "./context/AuthContext.js"; // Correct import for the AuthProvider
+import { AuthProvider } from "./context/AuthContext.js"; 
+import Profile from "./pages/Profile";
 
 function App() {
   const { currentUser } = false;
@@ -26,6 +27,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/Register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/Profile" element={<Profile />} />
               <Route path="/Home" element={<Home />} />
             </Routes>
           </section>

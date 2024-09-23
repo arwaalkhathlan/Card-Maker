@@ -26,7 +26,7 @@ const Popup = ({ message, onClose }) => {
 
 const Header = () => {
   const navigate = useNavigate();
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, currentUser } = useAuth();
 
   const [showLogoutPopup, setShowLogoutPopup] = useState(false); // State for logout popup
 
@@ -92,6 +92,18 @@ const Header = () => {
           onClose={() => setShowLogoutPopup(false)}
         />
       )}
+
+      <nav>
+        {currentUser && (
+          <Link to="/Profile">
+            <img
+              src={currentUser.photoURL || "/default-profile.png"}
+              alt="Profile"
+              className="profile-picture"
+            />
+          </Link>
+        )}
+      </nav>
     </header>
   );
 };

@@ -259,3 +259,10 @@ h3 {
   outline: #f4f4f4 solid 1px;
   opacity: 0.9;
 }
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
