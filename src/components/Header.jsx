@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.js";
 import { doSignOut } from "../firebase/auth";
-import { Toast } from "react-bootstrap"; // Import Toast from Bootstrap
+import { Toast } from "react-bootstrap";
 
 // Popup component using Bootstrap Toast
 const Popup = ({ message, onClose }) => {
@@ -42,11 +42,11 @@ const Header = () => {
   };
 
   const handleLogoClick = () => {
-    navigate("/"); // Navigate to the home page when the logo is clicked
+    navigate("/"); 
   };
 
   return (
-    <header className="bg-transparent py-3 d-flex align-items-center">
+    <header className="container bg-transparent py-3 d-flex align-items-center">
       <div className="logo">
         <button
           onClick={handleLogoClick}

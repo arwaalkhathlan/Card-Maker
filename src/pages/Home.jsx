@@ -129,7 +129,6 @@ const Home = () => {
     const ctx = canvas.getContext("2d");
     const img = new Image();
 
-    // Set crossOrigin to anonymous
     img.crossOrigin = "anonymous";
 
     img.onload = () => {
@@ -147,7 +146,6 @@ const Home = () => {
 
       ctx.fillText(card.text, textX, textY);
 
-      // Use toBlob instead of toDataURL
       canvas.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -160,7 +158,6 @@ const Home = () => {
 
     img.onerror = () => {
       console.error("Error loading image");
-      // Optionally, show an error message to the user
     };
 
     img.src = card.backgroundImage;
