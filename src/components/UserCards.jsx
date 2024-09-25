@@ -46,15 +46,24 @@ const UserCard = () => {
       <div className="row justify-content-center">
         {userCards.map((card) => (
           <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-4 d-flex justify-content-center" key={card.id}>
-            <div className="p-3"> {/* Added margin for spacing */}
+            <div className="p-3" style={{ position: 'relative' }}> {/* Set position to relative for overlapping */}
               <Card card={card} />
+              <div 
+                style={{
+                  position: 'absolute', 
+                  left: `${card.textPosition.x}%`, 
+                  top: `${card.textPosition.y}%`,
+                  color: 'white', // Optional: Change text color for visibility
+                  textShadow: '1px 1px 2px black' // Optional: Add shadow for better visibility
+                }}
+              >
+                {card.text}
+              </div>
             </div>
           </div>
         ))}
       </div>
       {userCards.length === 0 && <p>No cards found</p>}
-
-      {Card.text && <p>{Card.text}</p>}
     </div>
   );
 };
