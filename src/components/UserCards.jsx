@@ -80,12 +80,6 @@ const UserCard = () => {
     setSelectedCardId(id);
   };
 
-  const downloadCardDirect = (card) => {
-    const link = document.createElement("a");
-    link.href = card.backgroundImage; // Direct download
-    link.download = `${card.id}.png`; // Default name
-    link.click();
-  };
 
   const selectedCard = userCards.find((card) => card.id === selectedCardId);
 
@@ -130,9 +124,7 @@ const UserCard = () => {
           <button onClick={() => downloadCard(selectedCard)}>
             Download with Text
           </button>
-          <button onClick={() => downloadCardDirect(selectedCard)}>
-            Download Image Only
-          </button>
+
         </div>
       )}
     </div>
