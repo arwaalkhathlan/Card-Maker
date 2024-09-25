@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "../styles/App.css";
 import { useAuth } from "../context/AuthContext.js";
 import Draggable from "react-draggable"; 
-import { collection, addDoc, getDocs, query, where, updateDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase/firebase.js";
 
@@ -65,7 +65,7 @@ const Home = () => {
       text: "",
       textPosition: { x: 50, y: 50 },
     },
-  ], []); // Empty dependency array means this will only be created once
+  ], []);
 
   const [userCards, setUserCards] = useState([]);
   const [allCards, setAllCards] = useState([...defaultCards]);
@@ -76,35 +76,7 @@ const Home = () => {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
-  const fetchUserCards = useCallback(async () => {
-    if (!currentUser) return;
 
-    try {
-      const q = query(collection(db, "cards"), where("userId", "==", currentUser.uid));
-      const querySnapshot = await getDocs(q);
-      const fetchedUserCards = querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          ...data,
-          backgroundImage: data.backgroundImageUrl,
-          text: data.text || "",
-          textPosition: data.textPosition || { x: 50, y: 50 },
-        };
-      });
-      setUserCards(fetchedUserCards);
-      setAllCards([...defaultCards, ...fetchedUserCards]);
-    } catch (error) {
-      console.error("Error fetching user cards:", error);
-    }
-  }, [currentUser, defaultCards]);
-
-  useEffect(() => {
-    if (currentUser) {
-      setShowLoginPopup(true);
-      fetchUserCards();
-    }
-  }, [currentUser, fetchUserCards]);
 
   const handleTextChange = async (event) => {
     const newText = event.target.value;

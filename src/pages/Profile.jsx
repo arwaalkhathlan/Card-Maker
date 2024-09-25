@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "../context/AuthContext.js";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import UserCard from "../components/UserCards.jsx"; 
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -21,6 +22,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <UserCard />
       <Footer />
     </>
   );
