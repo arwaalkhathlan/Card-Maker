@@ -346,7 +346,7 @@ const Home = () => {
           </div>
         )}
 
-        <button onClick={handleAdd} className="btn btn-primary mt-3">Save Card</button>  
+        <button onClick={handleAdd} className="DownloadButton">احفظ البطاقة</button>  
 
         <Footer />
       </div>

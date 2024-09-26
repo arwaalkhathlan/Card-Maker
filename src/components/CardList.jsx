@@ -8,7 +8,7 @@ const CardList = ({ cards, onCardClick, selectedCardId }) => {
         {cards.map((card) => (
           <div
             key={card.id}
-            className="col-12 col-md-6 col-lg-4 mb-4 d-flex justify-content-center"
+            className="col-12 col-md-4 col-lg-3 mb-4 d-flex justify-content-center"
           >
             <Card
               card={card}

@@ -120,9 +120,9 @@ const UserCard = () => {
       </div>
       {allCards.length === 0 && <p>No cards found</p>}
       {selectedCard && (
-        <div>
-          <button onClick={() => downloadCard(selectedCard)}>
-            Download with Text
+        <div className="text-center mb-4">
+          <button className="btn btn-primary" onClick={() => downloadCard(selectedCard)}>
+            Download
           </button>
 
         </div>
