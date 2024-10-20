@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "../styles/App.css";
 import { useAuth } from "../context/AuthContext.js";
-import Draggable from "react-draggable"; 
+import Draggable from "react-draggable";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase/firebase.js";
 
 // Components import
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+
 import UploadCardButton from "../components/UploadCardButton";
 import CardList from "../components/CardList";
 import PreviewButton from "../components/PreviewButton";
@@ -19,7 +18,6 @@ import cardTemplate1 from "../images/card-template1.png";
 import cardTemplate2 from "../images/card-template2.png";
 import cardTemplate3 from "../images/card-template3.png";
 import cardTemplate4 from "../images/card-template4.png";
-
 
 // Popup component
 const Popup = ({ message, onClose }) => {
@@ -35,37 +33,38 @@ const Popup = ({ message, onClose }) => {
   );
 };
 
-
-
 const Home = () => {
   const { currentUser } = useAuth();
 
-  const defaultCards = useMemo(() => [
-    {
-      id: 'default1',
-      backgroundImage: cardTemplate1,
-      text: "",
-      textPosition: { x: 50, y: 50 },
-    },
-    {
-      id: 'default2',
-      backgroundImage: cardTemplate2,
-      text: "",
-      textPosition: { x: 50, y: 50 },
-    },
-    {
-      id: 'default3',
-      backgroundImage: cardTemplate3,
-      text: "",
-      textPosition: { x: 50, y: 50 },
-    },
-    {
-      id: 'default4',
-      backgroundImage: cardTemplate4,
-      text: "",
-      textPosition: { x: 50, y: 50 },
-    },
-  ], []);
+  const defaultCards = useMemo(
+    () => [
+      {
+        id: "default1",
+        backgroundImage: cardTemplate1,
+        text: "",
+        textPosition: { x: 50, y: 50 },
+      },
+      {
+        id: "default2",
+        backgroundImage: cardTemplate2,
+        text: "",
+        textPosition: { x: 50, y: 50 },
+      },
+      {
+        id: "default3",
+        backgroundImage: cardTemplate3,
+        text: "",
+        textPosition: { x: 50, y: 50 },
+      },
+      {
+        id: "default4",
+        backgroundImage: cardTemplate4,
+        text: "",
+        textPosition: { x: 50, y: 50 },
+      },
+    ],
+    []
+  );
 
   const [userCards, setUserCards] = useState([]);
   const [allCards, setAllCards] = useState([...defaultCards]);
@@ -75,8 +74,6 @@ const Home = () => {
   const [previewCard, setPreviewCard] = useState(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-
-
 
   const handleTextChange = async (event) => {
     const newText = event.target.value;
@@ -88,15 +85,22 @@ const Home = () => {
       setAllCards(updatedAllCards);
 
       // Update the card in the database if it's a user card
-      const selectedCard = updatedAllCards.find(card => card.id === selectedCardId);
-      if (typeof selectedCard.id === 'string' && selectedCard.id.startsWith('user_')) {
+      const selectedCard = updatedAllCards.find(
+        (card) => card.id === selectedCardId
+      );
+      if (
+        typeof selectedCard.id === "string" &&
+        selectedCard.id.startsWith("user_")
+      ) {
         try {
           await updateDoc(doc(db, "cards", selectedCard.id), {
             text: newText,
           });
-          setUserCards(userCards.map(card => 
-            card.id === selectedCard.id ? { ...card, text: newText } : card
-          ));
+          setUserCards(
+            userCards.map((card) =>
+              card.id === selectedCard.id ? { ...card, text: newText } : card
+            )
+          );
         } catch (error) {
           console.error("Error updating card:", error);
         }
@@ -196,40 +200,41 @@ const Home = () => {
     }
   };
 
-
   const handleAdd = async (e) => {
     e.preventDefault();
     if (!currentUser || selectedCardId === null) return;
-    
+
     try {
-      const selectedCard = allCards.find(card => card.id === selectedCardId);
-      
+      const selectedCard = allCards.find((card) => card.id === selectedCardId);
+
       // Upload image to Firebase Storage
-      const imageBlob = await fetch(selectedCard.backgroundImage).then(r => r.blob());
+      const imageBlob = await fetch(selectedCard.backgroundImage).then((r) =>
+        r.blob()
+      );
       const imagePath = `cardBackgrounds/${currentUser.uid}/${Date.now()}.png`;
       const storageRef = ref(storage, imagePath);
       await uploadBytes(storageRef, imageBlob);
-      
+
       // Get the download URL
       const backgroundImageUrl = await getDownloadURL(storageRef);
-      
+
       const newCardData = {
         userId: currentUser.uid,
         text: selectedCard.text,
         textPosition: selectedCard.textPosition,
         backgroundImageUrl: backgroundImageUrl,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
-      
+
       const docRef = await addDoc(collection(db, "cards"), newCardData);
       console.log("Card saved successfully");
-      
+
       const newCard = {
         id: docRef.id,
         ...newCardData,
         backgroundImage: backgroundImageUrl,
       };
-      
+
       setUserCards([...userCards, newCard]);
       setAllCards([...allCards, newCard]);
     } catch (error) {
@@ -239,7 +244,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <div className="Home container mt-5 d-flex flex-column align-items-center">
         {/* Login Popup */}
         {showLoginPopup && (
@@ -305,6 +309,8 @@ const Home = () => {
 
         <UploadCardButton onUpload={handleUpload} />
 
+        <p className="text-white">اسحب الاسم في البطاقة لتغيير مكانه</p>
+
         {/* Preview */}
         {previewCard && (
           <div className="d-flex justify-content-center align-items-center mt-4">
@@ -346,9 +352,9 @@ const Home = () => {
           </div>
         )}
 
-        <button onClick={handleAdd} className="DownloadButton">احفظ البطاقة</button>  
-
-        <Footer />
+        <button onClick={handleAdd} className="DownloadButton">
+          احفظ البطاقة
+        </button>
       </div>
     </>
   );

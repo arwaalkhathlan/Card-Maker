@@ -1,7 +1,5 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext.js";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import UserCard from "../components/UserCards.jsx";
 
 const Profile = () => {
@@ -9,7 +7,7 @@ const Profile = () => {
 
   return (
     <div className="container mt-5 d-flex flex-column align-items-center" style={{ backgroundRepeat: 'no-repeat' }}>
-      <Header />
+
 
       <div className="text-center mb-4">
         <h1 className="Text-Title text-primary">Profile</h1>
@@ -33,7 +31,6 @@ const Profile = () => {
 
       <UserCard />
 
-      <Footer />
     </div>
   );
 };

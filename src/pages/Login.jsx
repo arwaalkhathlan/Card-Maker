@@ -5,7 +5,6 @@ import {
   doSignInWithGoogle,
 } from "../firebase/auth";
 import { useAuth } from "../context/AuthContext.js";
-import Header from "../components/Header";
 
 const Login = () => {
   const { userLoggedIn } = useAuth();
@@ -43,7 +42,7 @@ const Login = () => {
   return (
     <>
       {userLoggedIn && <Navigate to={"/Home"} replace={true} />}
-      <Header />
+
 
       <main className="d-flex align-items-center justify-content-center vh-100">
         <div

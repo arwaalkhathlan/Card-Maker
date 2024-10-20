@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import { doCreateUserWithEmailAndPassword } from '../firebase/auth';
-import Header from '../components/Header';
+
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -35,7 +35,6 @@ const Register = () => {
     return (
         <>
             {userLoggedIn && <Navigate to={'/Home'} replace={true} />}
-            <Header />
 
             <main className="d-flex align-items-center justify-content-center vh-100">
                 <div className="card p-4 shadow-lg border-0" style={{ width: '24rem', backgroundColor: '#fff' }}>
