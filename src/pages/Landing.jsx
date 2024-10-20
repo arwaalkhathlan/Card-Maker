@@ -1,9 +1,12 @@
 // src/pages/Landing.js
 import React from "react";
-import Hero from "../components/Hero";
-import AboutUs from "../components/AboutUs";
-import WhatWeOffer from "../components/Services";
-import ContactUs from "../components/ContactUs";
+import Hero from "../components/landing/Hero";
+import AboutUs from "../components/landing/AboutUs";
+import Services from "../components/landing/Services";
+import ContactUs from "../components/landing/ContactUs";
+import OrderSteps from '../components/landing/OrderSteps';
+import Prices from '../components/landing/Prices';
+import WhatWeOffer from '../components/landing/WhatWeOffer';
 
 const Landing = () => {
   return (
@@ -12,6 +15,10 @@ const Landing = () => {
       <AboutUs />
       <WhatWeOffer />
       <ContactUs />
+      <OrderSteps/>
+      <Prices/>
+      <Services/>
+
     </div>
   );
 };
